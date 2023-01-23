@@ -1,0 +1,25 @@
+//uma função para criar um sistema de recomendação usando o algoritmo de filtragem colaborativa.
+
+import pandas as pd
+from sklearn.metrics.pairwise import cosine_similarity
+
+def collaborative_filtering(data, user_id, num_recommendations):
+    # Calcular a similaridade entre os usuários usando a similaridade cosseno
+    user_similarity = cosine_similarity(data)
+    
+    # Criar uma matriz de notas médias por usuário
+    mean_user_rating = data.mean(axis=1)
+    
+    # Criar a matriz de diferenças entre as notas e as notas médias
+    ratings_diff = (data - mean_user_rating[:, np.newaxis])
+    
+    # Multiplicar a matriz de diferenças pelas similaridades entre os usuários
+    pred = mean_user_rating[:, np.newaxis] + np.dot(user_similarity, ratings_diff) / np.array([np.abs(user_similarity).sum(axis=1)]).T
+    
+    # Encontrar as recomendações para o usuário especificado
+    user_ratings = data[user_id, :]
+    already_rated = user_ratings.nonzero()[0]
+    pred_user = pred[user_id, :]
+    recommendations = [(data.columns[i], pred_user[i]) for i in np.argsort(pred_user)[:-num_recommendations-1:-1] if i not in already_rated]
+    
+    return recommendations
