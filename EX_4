@@ -1,0 +1,21 @@
+import openai
+
+def generate_text(prompt, model_engine="text-davinci-002"):
+    completions = openai.Completion.create(
+        engine=model_engine,
+        prompt=prompt,
+        max_tokens=1024,
+        n=1,
+        stop=None,
+        temperature=0.5,
+    )
+
+    message = completions.choices[0].text
+    return message.strip()
+Para usar a função, você pode passar uma string de prompt (texto que serve como contexto para a geração de texto) como argumento. A função retornará uma string de texto gerada pelo modelo GPT-3.
+
+Copy code
+prompt = "Imagine uma cena em um dia ensolarado no parque, o que as pessoas estariam fazendo?"
+generated_text = generate_text(prompt)
+print(generated_text)
+Nota: é necessário ter uma chave de API válida para utilizar a biblioteca openai e acessar o GPT-3. Além disso, essa é uma forma simples de utilizar o GPT-3, existem outras formas de utilizar e personalizar esse modelo.
