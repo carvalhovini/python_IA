@@ -1,0 +1,24 @@
+# Importar as bibliotecas necessárias
+from sklearn import datasets
+from sklearn.neighbors import KNeighborsClassifier
+
+# Carregar o conjunto de dados iris
+iris = datasets.load_iris()
+
+# Defina os dados de treinamento e as respostas
+X = iris.data
+y = iris.target
+
+# Criar o classificador KNN
+knn = KNeighborsClassifier(n_neighbors=3)
+
+# Treinar o classificador com os dados de treinamento
+knn.fit(X, y)
+
+# Fazer previsões com novos dados
+knn.predict([[3, 5, 4, 2]])
+
+Este exemplo usa o conjunto de dados iris, que contém informações sobre diferentes tipos de flores. 
+O classificador KNN (K-Nearest Neighbors) é treinado com os dados de treinamento e usado para prever 
+a qual tipo de flor pertence um novo conjunto de dados. Este exemplo é uma implementação simples de uma IA, 
+mas existem muitas outras técnicas e algoritmos que podem ser usados para construir sistemas de IA mais sofisticados.
