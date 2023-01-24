@@ -1,0 +1,40 @@
+//uma função para gerar uma resposta automatizada para perguntas usando o algoritmo de processamento de linguagem natural (NLP).
+
+import spacy
+from spacy.matcher import Matcher
+
+def generate_answer(question, doc):
+    # Carregar o modelo spacy
+    nlp = spacy.load("en_core_web_sm")
+    matcher = Matcher(nlp.vocab)
+    
+    # Adicionar os padrões de correspondência
+    matcher.add("QUESTION", None, [{"LOWER": "where"}, {"IS_ALPHA": True}], [{"LOWER": "when"}, {"IS_ALPHA": True}], [{"LOWER": "who"}, {"IS_ALPHA": True}], [{"LOWER": "what"}, {"IS_ALPHA": True}], [{"LOWER": "why"}, {"IS_ALPHA": True}], [{"LOWER": "how"}, {"IS_ALPHA": True}])
+
+    doc = nlp(question)
+    matches = matcher(doc)
+    for match_id, start, end in matches:
+        span = doc[start:end]
+        print("Matched span:", span.text)
+        
+    # Processar a pergunta e encontrar a entidade relevante
+    doc = nlp(question)
+    entities = [e.text for e in doc.ents]
+    if entities:
+        entity = entities[0]
+    else:
+        entity = None
+        
+    # Gerar a resposta
+    if not entity:
+        return "Não entendi a pergunta, você poderia reformulá-la?"
+    else:
+        for sent in doc.sents:
+            if entity in sent.text:
+                return sent.text
+Para usar a função, você pode passar uma string de pergunta e uma string de documento como argumentos. A função tentará encontrar a entidade relevante na pergunta e, em seguida, retornará a frase do documento que contém a entidade encontrada.
+
+question = "Onde fica o Museu de Arte de São Paulo?"
+document = "O Museu de Arte de São Paulo, ou MASP, é um museu de arte localizado na cidade de São Paulo, Brasil. Ele foi fundado em 1947 e possui uma das maiores coleções de arte europeia fora da Europa."
+generate_answer(question, document)
+Nota: Esse é um exemplo simples de como implementar uma função de resposta automatizada usando NLP, existem outras formas de implementar e melhorar esse algoritmo. Além disso, esse exemplo é baseado em spacy, outras bibliotecas de processamento de linguagem natural também pode ser utilizadas para esse propósito.
