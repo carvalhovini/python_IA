@@ -1,0 +1,31 @@
+//uma função para implementar o algoritmo de clusterização K-means em um conjunto de dados.
+
+import numpy as np
+
+def kmeans(data, k):
+    # Inicializar os centroides com k amostras aleatórias do conjunto de dados
+    centroids = data[np.random.randint(data.shape[0], size=k), :]
+    
+    while True:
+        # Atribuir cada amostra ao cluster mais próximo
+        clusters = np.array([np.argmin([np.linalg.norm(x_i-y_k) for y_k in centroids]) for x_i in data])
+
+        # Armazenar os centroides antigos
+        prev_centroids = np.copy(centroids)
+        
+        # Atualizar os centroides com a média dos pontos no cluster
+        for i in range(k):
+            centroids[i] = np.mean(data[clusters == i], axis=0)
+        
+        # Verificar se os centroides não mudaram
+        if np.allclose(prev_centroids, centroids):
+            break
+    
+    return clusters, centroids
+Para usar a função, você pode passar o conjunto de dados e o número de clusters desejado (k) como argumentos. A função retorna dois valores: um array contendo o cluster atribuído a cada amostra e um array contendo os centroides finais.
+
+
+data = # Seu conjunto de dados
+k = # Número de clusters desejado
+clusters, centroids = kmeans(data, k)
+Nota: Esse é um exemplo simples de como implementar o algoritmo K-means, existem outras formas de implementar e melhorar esse algoritmo. Além disso, esse exemplo utiliza a norma euclidiana para calcular a distância entre os pontos. Outras métricas de distância podem ser utilizadas.
