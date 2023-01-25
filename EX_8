@@ -1,0 +1,24 @@
+from sklearn import tree
+from sklearn.model_selection import train_test_split
+
+def train_decision_tree(X, y):
+    # dividir os dados em conjuntos de treinamento e teste
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+    
+    # criar o modelo
+    clf = tree.DecisionTreeClassifier()
+    
+    # treinar o modelo com os dados de treinamento
+    clf = clf.fit(X_train, y_train)
+    
+    # avaliar o desempenho do modelo com os dados de teste
+    accuracy = clf.score(X_test, y_test)
+    print("Accuracy:", accuracy)
+    
+    return clf
+    
+Exemplo de uso:
+
+X = [[0, 0], [1, 1], [2, 2], [3, 3]]
+y = [0, 1, 1, 1]
+clf = train_decision_tree(X, y)
